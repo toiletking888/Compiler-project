@@ -1,0 +1,3701 @@
+Terminals unused in grammar
+
+    SEMICOLON
+    LB
+    RB
+    CHAR
+    DEFAULT
+    DO
+    FAL
+    TRU
+
+
+State 1 conflicts: 1 shift/reduce
+State 25 conflicts: 11 shift/reduce
+State 44 conflicts: 1 reduce/reduce
+State 45 conflicts: 1 reduce/reduce
+State 82 conflicts: 1 reduce/reduce
+State 98 conflicts: 13 reduce/reduce
+State 101 conflicts: 1 shift/reduce
+State 158 conflicts: 1 reduce/reduce
+State 159 conflicts: 1 reduce/reduce
+
+
+Grammar
+
+    0 $accept: init $end
+
+    1 init: program
+
+    2 program: %empty
+    3        | declarations program
+    4        | statement_sequence program
+
+    5 declarations: const_declarations
+    6             | array_declarations
+    7             | variable_declarations
+    8             | function_declarations
+    9             | procedure_declarations
+
+   10 type: STR
+   11     | INT
+   12     | REAL
+   13     | BOOL
+
+   14 $@1: %empty
+
+   15 function_declarations: FUNCTION IDENTIFIER LP formal_arguments RP COLON type $@1 description END IDENTIFIER
+
+   16 $@2: %empty
+
+   17 function_declarations: FUNCTION IDENTIFIER LP RP COLON type $@2 description END IDENTIFIER
+
+   18 $@3: %empty
+
+   19 procedure_declarations: PROCEDURE IDENTIFIER LP formal_arguments RP $@3 description END IDENTIFIER
+
+   20 $@4: %empty
+
+   21 procedure_declarations: PROCEDURE IDENTIFIER LP RP $@4 description END IDENTIFIER
+
+   22 formal_arguments: args
+
+   23 args: IDENTIFIER COLON type
+   24     | IDENTIFIER COLON type COMMA args
+
+   25 const_declarations: CONST IDENTIFIER COLON type ASSIGN const_expression
+   26                   | CONST IDENTIFIER ASSIGN const_expression
+
+   27 variable_declarations: VAR IDENTIFIER ASSIGN const_expression
+   28                      | VAR IDENTIFIER COLON type ASSIGN const_expression
+   29                      | VAR IDENTIFIER COLON type
+
+   30 array_declarations: VAR IDENTIFIER COLON ARRAY INTEGER DOT DOT INTEGER OF type
+
+   31 statement_sequence: statements
+   32                   | statements statement_sequence
+
+   33 statements: block
+   34           | simple
+   35           | conditional
+   36           | loop
+   37           | procedure_invocation
+
+   38 $@5: %empty
+
+   39 block: BYG $@5 description END
+   40      | BYG END
+
+   41 simple: IDENTIFIER ASSIGN expressions
+   42       | IDENTIFIER LMB expressions RMB ASSIGN expressions
+   43       | PUT expressions
+   44       | GET IDENTIFIER
+   45       | RESULT expressions
+   46       | RETURN
+   47       | EXIT WHEN boolean_expression
+   48       | EXIT
+   49       | SKIP
+
+   50 expressions: operand_expression
+   51            | LP expressions RP
+   52            | operand_expression LT operand_expression
+   53            | operand_expression LET operand_expression
+   54            | operand_expression EQ operand_expression
+   55            | operand_expression GETH operand_expression
+   56            | operand_expression GT operand_expression
+   57            | operand_expression NEQ operand_expression
+
+   58 operand_expression: operand_term
+   59                   | operand_expression OR operand_expression
+   60                   | operand_expression AND operand_expression
+   61                   | NOT operand_expression
+   62                   | operand_expression ADD operand_expression
+   63                   | operand_expression SUB operand_expression
+   64                   | operand_expression MUL operand_expression
+   65                   | operand_expression DIV operand_expression
+   66                   | operand_expression MOD operand_expression
+   67                   | SUB operand_expression
+
+   68 procedure_invocation: IDENTIFIER LP arguments RP
+   69                     | IDENTIFIER LP RP
+
+   70 operand_term: IDENTIFIER LP arguments RP
+   71             | IDENTIFIER LP RP
+   72             | IDENTIFIER LMB operand_expression RMB
+   73             | LP operand_expression RP
+   74             | STRING
+   75             | INTEGER
+   76             | FLOAT
+   77             | BOOLEAN
+   78             | IDENTIFIER
+
+   79 arguments: expressions
+   80          | expressions COMMA arguments
+
+   81 $@6: %empty
+
+   82 $@7: %empty
+
+   83 $@8: %empty
+
+   84 conditional: IF boolean_expression THEN $@6 description $@7 ELSE $@8 description END IF
+
+   85 $@9: %empty
+
+   86 conditional: IF boolean_expression THEN $@9 description END IF
+
+   87 boolean_expression: LP boolean_expression RP
+   88                   | operand_expression LT operand_expression
+   89                   | operand_expression LET operand_expression
+   90                   | operand_expression EQ operand_expression
+   91                   | operand_expression GETH operand_expression
+   92                   | operand_expression GT operand_expression
+   93                   | operand_expression NEQ operand_expression
+   94                   | operand_expression OR operand_expression
+   95                   | operand_expression AND operand_expression
+   96                   | NOT operand_expression
+   97                   | IDENTIFIER
+   98                   | BOOLEAN
+
+   99 description: %empty
+  100            | const_declarations description
+  101            | variable_declarations description
+  102            | statement_sequence description
+
+  103 $@10: %empty
+
+  104 loop: LOOP $@10 description END LOOP
+
+  105 $@11: %empty
+
+  106 loop: FOR DECREASING IDENTIFIER COLON const_expression DOT DOT const_expression $@11 description END FOR
+
+  107 $@12: %empty
+
+  108 loop: FOR IDENTIFIER COLON const_expression DOT DOT const_expression $@12 description END FOR
+
+  109 const_expression: STRING
+  110                 | INTEGER
+  111                 | FLOAT
+  112                 | BOOLEAN
+  113                 | IDENTIFIER
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    ASSIGN (258) 25 26 27 28 41 42
+    DOT (259) 30 106 108
+    COMMA (260) 24 80
+    COLON (261) 15 17 23 24 25 28 29 30 106 108
+    SEMICOLON (262)
+    LP (263) 15 17 19 21 51 68 69 70 71 73 87
+    RP (264) 15 17 19 21 51 68 69 70 71 73 87
+    LMB (265) 42 72
+    RMB (266) 42 72
+    LB (267)
+    RB (268)
+    MOD (269) 66
+    ADD (270) 62
+    SUB (271) 63 67
+    MUL (272) 64
+    DIV (273) 65
+    LT (274) 52 88
+    LET (275) 53 89
+    GETH (276) 55 91
+    GT (277) 56 92
+    EQ (278) 54 90
+    NEQ (279) 57 93
+    AND (280) 60 95
+    OR (281) 59 94
+    NOT (282) 61 96
+    ARRAY (283) 30
+    BYG (284) 39 40
+    BOOL (285) 13
+    CHAR (286)
+    CONST (287) 25 26
+    DECREASING (288) 106
+    DEFAULT (289)
+    DO (290)
+    ELSE (291) 84
+    END (292) 15 17 19 21 39 40 84 86 104 106 108
+    EXIT (293) 47 48
+    FAL (294)
+    FOR (295) 106 108
+    FUNCTION (296) 15 17
+    GET (297) 44
+    IF (298) 84 86
+    INT (299) 11
+    LOOP (300) 104
+    OF (301) 30
+    PUT (302) 43
+    PROCEDURE (303) 19 21
+    REAL (304) 12
+    RESULT (305) 45
+    RETURN (306) 46
+    SKIP (307) 49
+    STR (308) 10
+    THEN (309) 84 86
+    TRU (310)
+    VAR (311) 27 28 29 30
+    WHEN (312) 47
+    INTEGER <int_val> (313) 30 75 110
+    FLOAT <float_val> (314) 76 111
+    BOOLEAN <bool_val> (315) 77 98 112
+    IDENTIFIER <variable> (316) 15 17 19 21 23 24 25 26 27 28 29 30 41 42 44 68 69 70 71 72 78 97 106 108 113
+    STRING <str_val> (317) 74 109
+    UMINUS (318)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (64)
+        on left: 0
+    init (65)
+        on left: 1
+        on right: 0
+    program (66)
+        on left: 2 3 4
+        on right: 1 3 4
+    declarations (67)
+        on left: 5 6 7 8 9
+        on right: 3
+    type <typical_type> (68)
+        on left: 10 11 12 13
+        on right: 15 17 23 24 25 28 29 30
+    function_declarations (69)
+        on left: 15 17
+        on right: 8
+    $@1 (70)
+        on left: 14
+        on right: 15
+    $@2 (71)
+        on left: 16
+        on right: 17
+    procedure_declarations (72)
+        on left: 19 21
+        on right: 9
+    $@3 (73)
+        on left: 18
+        on right: 19
+    $@4 (74)
+        on left: 20
+        on right: 21
+    formal_arguments <argument_list> (75)
+        on left: 22
+        on right: 15 19
+    args <argument_list> (76)
+        on left: 23 24
+        on right: 22 24
+    const_declarations (77)
+        on left: 25 26
+        on right: 5 100
+    variable_declarations (78)
+        on left: 27 28 29
+        on right: 7 101
+    array_declarations (79)
+        on left: 30
+        on right: 6
+    statement_sequence (80)
+        on left: 31 32
+        on right: 4 32 102
+    statements (81)
+        on left: 33 34 35 36 37
+        on right: 31 32
+    block (82)
+        on left: 39 40
+        on right: 33
+    $@5 (83)
+        on left: 38
+        on right: 39
+    simple (84)
+        on left: 41 42 43 44 45 46 47 48 49
+        on right: 34
+    expressions <expr_result> (85)
+        on left: 50 51 52 53 54 55 56 57
+        on right: 41 42 43 45 51 79 80
+    operand_expression <expr_result> (86)
+        on left: 58 59 60 61 62 63 64 65 66 67
+        on right: 50 52 53 54 55 56 57 59 60 61 62 63 64 65 66 67 72 73 88 89 90 91 92 93 94 95 96
+    procedure_invocation <expr_result> (87)
+        on left: 68 69
+        on right: 37
+    operand_term <expr_result> (88)
+        on left: 70 71 72 73 74 75 76 77 78
+        on right: 58
+    arguments <argument_list> (89)
+        on left: 79 80
+        on right: 68 70 80
+    conditional (90)
+        on left: 84 86
+        on right: 35
+    $@6 (91)
+        on left: 81
+        on right: 84
+    $@7 (92)
+        on left: 82
+        on right: 84
+    $@8 (93)
+        on left: 83
+        on right: 84
+    $@9 (94)
+        on left: 85
+        on right: 86
+    boolean_expression <expr_result> (95)
+        on left: 87 88 89 90 91 92 93 94 95 96 97 98
+        on right: 47 84 86 87
+    description (96)
+        on left: 99 100 101 102
+        on right: 15 17 19 21 39 84 86 100 101 102 104 106 108
+    loop (97)
+        on left: 104 106 108
+        on right: 36
+    $@10 (98)
+        on left: 103
+        on right: 104
+    $@11 (99)
+        on left: 105
+        on right: 106
+    $@12 (100)
+        on left: 107
+        on right: 108
+    const_expression <expr_result> (101)
+        on left: 109 110 111 112 113
+        on right: 25 26 27 28 106 108
+
+
+State 0
+
+    0 $accept: . init $end
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    FUNCTION    shift, and go to state 5
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    PROCEDURE   shift, and go to state 10
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 14
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 2 (program)
+
+    init                    go to state 16
+    program                 go to state 17
+    declarations            go to state 18
+    function_declarations   go to state 19
+    procedure_declarations  go to state 20
+    const_declarations      go to state 21
+    variable_declarations   go to state 22
+    array_declarations      go to state 23
+    statement_sequence      go to state 24
+    statements              go to state 25
+    block                   go to state 26
+    simple                  go to state 27
+    procedure_invocation    go to state 28
+    conditional             go to state 29
+    loop                    go to state 30
+
+
+State 1
+
+   39 block: BYG . $@5 description END
+   40      | BYG . END
+
+    END  shift, and go to state 31
+
+    END       [reduce using rule 38 ($@5)]
+    $default  reduce using rule 38 ($@5)
+
+    $@5  go to state 32
+
+
+State 2
+
+   25 const_declarations: CONST . IDENTIFIER COLON type ASSIGN const_expression
+   26                   | CONST . IDENTIFIER ASSIGN const_expression
+
+    IDENTIFIER  shift, and go to state 33
+
+
+State 3
+
+   47 simple: EXIT . WHEN boolean_expression
+   48       | EXIT .
+
+    WHEN  shift, and go to state 34
+
+    $default  reduce using rule 48 (simple)
+
+
+State 4
+
+  106 loop: FOR . DECREASING IDENTIFIER COLON const_expression DOT DOT const_expression $@11 description END FOR
+  108     | FOR . IDENTIFIER COLON const_expression DOT DOT const_expression $@12 description END FOR
+
+    DECREASING  shift, and go to state 35
+    IDENTIFIER  shift, and go to state 36
+
+
+State 5
+
+   15 function_declarations: FUNCTION . IDENTIFIER LP formal_arguments RP COLON type $@1 description END IDENTIFIER
+   17                      | FUNCTION . IDENTIFIER LP RP COLON type $@2 description END IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 37
+
+
+State 6
+
+   44 simple: GET . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 38
+
+
+State 7
+
+   84 conditional: IF . boolean_expression THEN $@6 description $@7 ELSE $@8 description END IF
+   86            | IF . boolean_expression THEN $@9 description END IF
+
+    LP          shift, and go to state 39
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 41
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 44
+    IDENTIFIER  shift, and go to state 45
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 47
+    operand_term        go to state 48
+    boolean_expression  go to state 49
+
+
+State 8
+
+  104 loop: LOOP . $@10 description END LOOP
+
+    $default  reduce using rule 103 ($@10)
+
+    $@10  go to state 50
+
+
+State 9
+
+   43 simple: PUT . expressions
+
+    LP          shift, and go to state 51
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    expressions         go to state 55
+    operand_expression  go to state 56
+    operand_term        go to state 48
+
+
+State 10
+
+   19 procedure_declarations: PROCEDURE . IDENTIFIER LP formal_arguments RP $@3 description END IDENTIFIER
+   21                       | PROCEDURE . IDENTIFIER LP RP $@4 description END IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 57
+
+
+State 11
+
+   45 simple: RESULT . expressions
+
+    LP          shift, and go to state 51
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    expressions         go to state 58
+    operand_expression  go to state 56
+    operand_term        go to state 48
+
+
+State 12
+
+   46 simple: RETURN .
+
+    $default  reduce using rule 46 (simple)
+
+
+State 13
+
+   49 simple: SKIP .
+
+    $default  reduce using rule 49 (simple)
+
+
+State 14
+
+   27 variable_declarations: VAR . IDENTIFIER ASSIGN const_expression
+   28                      | VAR . IDENTIFIER COLON type ASSIGN const_expression
+   29                      | VAR . IDENTIFIER COLON type
+   30 array_declarations: VAR . IDENTIFIER COLON ARRAY INTEGER DOT DOT INTEGER OF type
+
+    IDENTIFIER  shift, and go to state 59
+
+
+State 15
+
+   41 simple: IDENTIFIER . ASSIGN expressions
+   42       | IDENTIFIER . LMB expressions RMB ASSIGN expressions
+   68 procedure_invocation: IDENTIFIER . LP arguments RP
+   69                     | IDENTIFIER . LP RP
+
+    ASSIGN  shift, and go to state 60
+    LP      shift, and go to state 61
+    LMB     shift, and go to state 62
+
+
+State 16
+
+    0 $accept: init . $end
+
+    $end  shift, and go to state 63
+
+
+State 17
+
+    1 init: program .
+
+    $default  reduce using rule 1 (init)
+
+
+State 18
+
+    3 program: declarations . program
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    FUNCTION    shift, and go to state 5
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    PROCEDURE   shift, and go to state 10
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 14
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 2 (program)
+
+    program                 go to state 64
+    declarations            go to state 18
+    function_declarations   go to state 19
+    procedure_declarations  go to state 20
+    const_declarations      go to state 21
+    variable_declarations   go to state 22
+    array_declarations      go to state 23
+    statement_sequence      go to state 24
+    statements              go to state 25
+    block                   go to state 26
+    simple                  go to state 27
+    procedure_invocation    go to state 28
+    conditional             go to state 29
+    loop                    go to state 30
+
+
+State 19
+
+    8 declarations: function_declarations .
+
+    $default  reduce using rule 8 (declarations)
+
+
+State 20
+
+    9 declarations: procedure_declarations .
+
+    $default  reduce using rule 9 (declarations)
+
+
+State 21
+
+    5 declarations: const_declarations .
+
+    $default  reduce using rule 5 (declarations)
+
+
+State 22
+
+    7 declarations: variable_declarations .
+
+    $default  reduce using rule 7 (declarations)
+
+
+State 23
+
+    6 declarations: array_declarations .
+
+    $default  reduce using rule 6 (declarations)
+
+
+State 24
+
+    4 program: statement_sequence . program
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    FUNCTION    shift, and go to state 5
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    PROCEDURE   shift, and go to state 10
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 14
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 2 (program)
+
+    program                 go to state 65
+    declarations            go to state 18
+    function_declarations   go to state 19
+    procedure_declarations  go to state 20
+    const_declarations      go to state 21
+    variable_declarations   go to state 22
+    array_declarations      go to state 23
+    statement_sequence      go to state 24
+    statements              go to state 25
+    block                   go to state 26
+    simple                  go to state 27
+    procedure_invocation    go to state 28
+    conditional             go to state 29
+    loop                    go to state 30
+
+
+State 25
+
+   31 statement_sequence: statements .
+   32                   | statements . statement_sequence
+
+    BYG         shift, and go to state 1
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    IDENTIFIER  shift, and go to state 15
+
+    BYG         [reduce using rule 31 (statement_sequence)]
+    EXIT        [reduce using rule 31 (statement_sequence)]
+    FOR         [reduce using rule 31 (statement_sequence)]
+    GET         [reduce using rule 31 (statement_sequence)]
+    IF          [reduce using rule 31 (statement_sequence)]
+    LOOP        [reduce using rule 31 (statement_sequence)]
+    PUT         [reduce using rule 31 (statement_sequence)]
+    RESULT      [reduce using rule 31 (statement_sequence)]
+    RETURN      [reduce using rule 31 (statement_sequence)]
+    SKIP        [reduce using rule 31 (statement_sequence)]
+    IDENTIFIER  [reduce using rule 31 (statement_sequence)]
+    $default    reduce using rule 31 (statement_sequence)
+
+    statement_sequence    go to state 66
+    statements            go to state 25
+    block                 go to state 26
+    simple                go to state 27
+    procedure_invocation  go to state 28
+    conditional           go to state 29
+    loop                  go to state 30
+
+
+State 26
+
+   33 statements: block .
+
+    $default  reduce using rule 33 (statements)
+
+
+State 27
+
+   34 statements: simple .
+
+    $default  reduce using rule 34 (statements)
+
+
+State 28
+
+   37 statements: procedure_invocation .
+
+    $default  reduce using rule 37 (statements)
+
+
+State 29
+
+   35 statements: conditional .
+
+    $default  reduce using rule 35 (statements)
+
+
+State 30
+
+   36 statements: loop .
+
+    $default  reduce using rule 36 (statements)
+
+
+State 31
+
+   40 block: BYG END .
+
+    $default  reduce using rule 40 (block)
+
+
+State 32
+
+   39 block: BYG $@5 . description END
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 71
+    loop                   go to state 30
+
+
+State 33
+
+   25 const_declarations: CONST IDENTIFIER . COLON type ASSIGN const_expression
+   26                   | CONST IDENTIFIER . ASSIGN const_expression
+
+    ASSIGN  shift, and go to state 72
+    COLON   shift, and go to state 73
+
+
+State 34
+
+   47 simple: EXIT WHEN . boolean_expression
+
+    LP          shift, and go to state 39
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 41
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 44
+    IDENTIFIER  shift, and go to state 45
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 47
+    operand_term        go to state 48
+    boolean_expression  go to state 74
+
+
+State 35
+
+  106 loop: FOR DECREASING . IDENTIFIER COLON const_expression DOT DOT const_expression $@11 description END FOR
+
+    IDENTIFIER  shift, and go to state 75
+
+
+State 36
+
+  108 loop: FOR IDENTIFIER . COLON const_expression DOT DOT const_expression $@12 description END FOR
+
+    COLON  shift, and go to state 76
+
+
+State 37
+
+   15 function_declarations: FUNCTION IDENTIFIER . LP formal_arguments RP COLON type $@1 description END IDENTIFIER
+   17                      | FUNCTION IDENTIFIER . LP RP COLON type $@2 description END IDENTIFIER
+
+    LP  shift, and go to state 77
+
+
+State 38
+
+   44 simple: GET IDENTIFIER .
+
+    $default  reduce using rule 44 (simple)
+
+
+State 39
+
+   73 operand_term: LP . operand_expression RP
+   87 boolean_expression: LP . boolean_expression RP
+
+    LP          shift, and go to state 39
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 41
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 44
+    IDENTIFIER  shift, and go to state 45
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 78
+    operand_term        go to state 48
+    boolean_expression  go to state 79
+
+
+State 40
+
+   67 operand_expression: SUB . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 81
+    operand_term        go to state 48
+
+
+State 41
+
+   61 operand_expression: NOT . operand_expression
+   96 boolean_expression: NOT . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 82
+    operand_term        go to state 48
+
+
+State 42
+
+   75 operand_term: INTEGER .
+
+    $default  reduce using rule 75 (operand_term)
+
+
+State 43
+
+   76 operand_term: FLOAT .
+
+    $default  reduce using rule 76 (operand_term)
+
+
+State 44
+
+   77 operand_term: BOOLEAN .
+   98 boolean_expression: BOOLEAN .
+
+    RP        reduce using rule 77 (operand_term)
+    RP        [reduce using rule 98 (boolean_expression)]
+    MOD       reduce using rule 77 (operand_term)
+    ADD       reduce using rule 77 (operand_term)
+    SUB       reduce using rule 77 (operand_term)
+    MUL       reduce using rule 77 (operand_term)
+    DIV       reduce using rule 77 (operand_term)
+    LT        reduce using rule 77 (operand_term)
+    LET       reduce using rule 77 (operand_term)
+    GETH      reduce using rule 77 (operand_term)
+    GT        reduce using rule 77 (operand_term)
+    EQ        reduce using rule 77 (operand_term)
+    NEQ       reduce using rule 77 (operand_term)
+    AND       reduce using rule 77 (operand_term)
+    OR        reduce using rule 77 (operand_term)
+    $default  reduce using rule 98 (boolean_expression)
+
+
+State 45
+
+   70 operand_term: IDENTIFIER . LP arguments RP
+   71             | IDENTIFIER . LP RP
+   72             | IDENTIFIER . LMB operand_expression RMB
+   78             | IDENTIFIER .
+   97 boolean_expression: IDENTIFIER .
+
+    LP   shift, and go to state 83
+    LMB  shift, and go to state 84
+
+    RP        reduce using rule 78 (operand_term)
+    RP        [reduce using rule 97 (boolean_expression)]
+    MOD       reduce using rule 78 (operand_term)
+    ADD       reduce using rule 78 (operand_term)
+    SUB       reduce using rule 78 (operand_term)
+    MUL       reduce using rule 78 (operand_term)
+    DIV       reduce using rule 78 (operand_term)
+    LT        reduce using rule 78 (operand_term)
+    LET       reduce using rule 78 (operand_term)
+    GETH      reduce using rule 78 (operand_term)
+    GT        reduce using rule 78 (operand_term)
+    EQ        reduce using rule 78 (operand_term)
+    NEQ       reduce using rule 78 (operand_term)
+    AND       reduce using rule 78 (operand_term)
+    OR        reduce using rule 78 (operand_term)
+    $default  reduce using rule 97 (boolean_expression)
+
+
+State 46
+
+   74 operand_term: STRING .
+
+    $default  reduce using rule 74 (operand_term)
+
+
+State 47
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   88 boolean_expression: operand_expression . LT operand_expression
+   89                   | operand_expression . LET operand_expression
+   90                   | operand_expression . EQ operand_expression
+   91                   | operand_expression . GETH operand_expression
+   92                   | operand_expression . GT operand_expression
+   93                   | operand_expression . NEQ operand_expression
+   94                   | operand_expression . OR operand_expression
+   95                   | operand_expression . AND operand_expression
+
+    MOD   shift, and go to state 85
+    ADD   shift, and go to state 86
+    SUB   shift, and go to state 87
+    MUL   shift, and go to state 88
+    DIV   shift, and go to state 89
+    LT    shift, and go to state 90
+    LET   shift, and go to state 91
+    GETH  shift, and go to state 92
+    GT    shift, and go to state 93
+    EQ    shift, and go to state 94
+    NEQ   shift, and go to state 95
+    AND   shift, and go to state 96
+    OR    shift, and go to state 97
+
+
+State 48
+
+   58 operand_expression: operand_term .
+
+    $default  reduce using rule 58 (operand_expression)
+
+
+State 49
+
+   84 conditional: IF boolean_expression . THEN $@6 description $@7 ELSE $@8 description END IF
+   86            | IF boolean_expression . THEN $@9 description END IF
+
+    THEN  shift, and go to state 98
+
+
+State 50
+
+  104 loop: LOOP $@10 . description END LOOP
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 99
+    loop                   go to state 30
+
+
+State 51
+
+   51 expressions: LP . expressions RP
+   73 operand_term: LP . operand_expression RP
+
+    LP          shift, and go to state 51
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    expressions         go to state 100
+    operand_expression  go to state 101
+    operand_term        go to state 48
+
+
+State 52
+
+   61 operand_expression: NOT . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 102
+    operand_term        go to state 48
+
+
+State 53
+
+   77 operand_term: BOOLEAN .
+
+    $default  reduce using rule 77 (operand_term)
+
+
+State 54
+
+   70 operand_term: IDENTIFIER . LP arguments RP
+   71             | IDENTIFIER . LP RP
+   72             | IDENTIFIER . LMB operand_expression RMB
+   78             | IDENTIFIER .
+
+    LP   shift, and go to state 83
+    LMB  shift, and go to state 84
+
+    $default  reduce using rule 78 (operand_term)
+
+
+State 55
+
+   43 simple: PUT expressions .
+
+    $default  reduce using rule 43 (simple)
+
+
+State 56
+
+   50 expressions: operand_expression .
+   52            | operand_expression . LT operand_expression
+   53            | operand_expression . LET operand_expression
+   54            | operand_expression . EQ operand_expression
+   55            | operand_expression . GETH operand_expression
+   56            | operand_expression . GT operand_expression
+   57            | operand_expression . NEQ operand_expression
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD   shift, and go to state 85
+    ADD   shift, and go to state 86
+    SUB   shift, and go to state 87
+    MUL   shift, and go to state 88
+    DIV   shift, and go to state 89
+    LT    shift, and go to state 103
+    LET   shift, and go to state 104
+    GETH  shift, and go to state 105
+    GT    shift, and go to state 106
+    EQ    shift, and go to state 107
+    NEQ   shift, and go to state 108
+    AND   shift, and go to state 109
+    OR    shift, and go to state 110
+
+    $default  reduce using rule 50 (expressions)
+
+
+State 57
+
+   19 procedure_declarations: PROCEDURE IDENTIFIER . LP formal_arguments RP $@3 description END IDENTIFIER
+   21                       | PROCEDURE IDENTIFIER . LP RP $@4 description END IDENTIFIER
+
+    LP  shift, and go to state 111
+
+
+State 58
+
+   45 simple: RESULT expressions .
+
+    $default  reduce using rule 45 (simple)
+
+
+State 59
+
+   27 variable_declarations: VAR IDENTIFIER . ASSIGN const_expression
+   28                      | VAR IDENTIFIER . COLON type ASSIGN const_expression
+   29                      | VAR IDENTIFIER . COLON type
+   30 array_declarations: VAR IDENTIFIER . COLON ARRAY INTEGER DOT DOT INTEGER OF type
+
+    ASSIGN  shift, and go to state 112
+    COLON   shift, and go to state 113
+
+
+State 60
+
+   41 simple: IDENTIFIER ASSIGN . expressions
+
+    LP          shift, and go to state 51
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    expressions         go to state 114
+    operand_expression  go to state 56
+    operand_term        go to state 48
+
+
+State 61
+
+   68 procedure_invocation: IDENTIFIER LP . arguments RP
+   69                     | IDENTIFIER LP . RP
+
+    LP          shift, and go to state 51
+    RP          shift, and go to state 115
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    expressions         go to state 116
+    operand_expression  go to state 56
+    operand_term        go to state 48
+    arguments           go to state 117
+
+
+State 62
+
+   42 simple: IDENTIFIER LMB . expressions RMB ASSIGN expressions
+
+    LP          shift, and go to state 51
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    expressions         go to state 118
+    operand_expression  go to state 56
+    operand_term        go to state 48
+
+
+State 63
+
+    0 $accept: init $end .
+
+    $default  accept
+
+
+State 64
+
+    3 program: declarations program .
+
+    $default  reduce using rule 3 (program)
+
+
+State 65
+
+    4 program: statement_sequence program .
+
+    $default  reduce using rule 4 (program)
+
+
+State 66
+
+   32 statement_sequence: statements statement_sequence .
+
+    $default  reduce using rule 32 (statement_sequence)
+
+
+State 67
+
+   27 variable_declarations: VAR . IDENTIFIER ASSIGN const_expression
+   28                      | VAR . IDENTIFIER COLON type ASSIGN const_expression
+   29                      | VAR . IDENTIFIER COLON type
+
+    IDENTIFIER  shift, and go to state 119
+
+
+State 68
+
+  100 description: const_declarations . description
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 120
+    loop                   go to state 30
+
+
+State 69
+
+  101 description: variable_declarations . description
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 121
+    loop                   go to state 30
+
+
+State 70
+
+  102 description: statement_sequence . description
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 122
+    loop                   go to state 30
+
+
+State 71
+
+   39 block: BYG $@5 description . END
+
+    END  shift, and go to state 123
+
+
+State 72
+
+   26 const_declarations: CONST IDENTIFIER ASSIGN . const_expression
+
+    INTEGER     shift, and go to state 124
+    FLOAT       shift, and go to state 125
+    BOOLEAN     shift, and go to state 126
+    IDENTIFIER  shift, and go to state 127
+    STRING      shift, and go to state 128
+
+    const_expression  go to state 129
+
+
+State 73
+
+   25 const_declarations: CONST IDENTIFIER COLON . type ASSIGN const_expression
+
+    BOOL  shift, and go to state 130
+    INT   shift, and go to state 131
+    REAL  shift, and go to state 132
+    STR   shift, and go to state 133
+
+    type  go to state 134
+
+
+State 74
+
+   47 simple: EXIT WHEN boolean_expression .
+
+    $default  reduce using rule 47 (simple)
+
+
+State 75
+
+  106 loop: FOR DECREASING IDENTIFIER . COLON const_expression DOT DOT const_expression $@11 description END FOR
+
+    COLON  shift, and go to state 135
+
+
+State 76
+
+  108 loop: FOR IDENTIFIER COLON . const_expression DOT DOT const_expression $@12 description END FOR
+
+    INTEGER     shift, and go to state 124
+    FLOAT       shift, and go to state 125
+    BOOLEAN     shift, and go to state 126
+    IDENTIFIER  shift, and go to state 127
+    STRING      shift, and go to state 128
+
+    const_expression  go to state 136
+
+
+State 77
+
+   15 function_declarations: FUNCTION IDENTIFIER LP . formal_arguments RP COLON type $@1 description END IDENTIFIER
+   17                      | FUNCTION IDENTIFIER LP . RP COLON type $@2 description END IDENTIFIER
+
+    RP          shift, and go to state 137
+    IDENTIFIER  shift, and go to state 138
+
+    formal_arguments  go to state 139
+    args              go to state 140
+
+
+State 78
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   73 operand_term: LP operand_expression . RP
+   88 boolean_expression: operand_expression . LT operand_expression
+   89                   | operand_expression . LET operand_expression
+   90                   | operand_expression . EQ operand_expression
+   91                   | operand_expression . GETH operand_expression
+   92                   | operand_expression . GT operand_expression
+   93                   | operand_expression . NEQ operand_expression
+   94                   | operand_expression . OR operand_expression
+   95                   | operand_expression . AND operand_expression
+
+    RP    shift, and go to state 141
+    MOD   shift, and go to state 85
+    ADD   shift, and go to state 86
+    SUB   shift, and go to state 87
+    MUL   shift, and go to state 88
+    DIV   shift, and go to state 89
+    LT    shift, and go to state 90
+    LET   shift, and go to state 91
+    GETH  shift, and go to state 92
+    GT    shift, and go to state 93
+    EQ    shift, and go to state 94
+    NEQ   shift, and go to state 95
+    AND   shift, and go to state 96
+    OR    shift, and go to state 97
+
+
+State 79
+
+   87 boolean_expression: LP boolean_expression . RP
+
+    RP  shift, and go to state 142
+
+
+State 80
+
+   73 operand_term: LP . operand_expression RP
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 143
+    operand_term        go to state 48
+
+
+State 81
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   67                   | SUB operand_expression .
+
+    $default  reduce using rule 67 (operand_expression)
+
+
+State 82
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   61                   | NOT operand_expression .
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   96 boolean_expression: NOT operand_expression .
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+
+    RP        reduce using rule 61 (operand_expression)
+    RP        [reduce using rule 96 (boolean_expression)]
+    LT        reduce using rule 61 (operand_expression)
+    LET       reduce using rule 61 (operand_expression)
+    GETH      reduce using rule 61 (operand_expression)
+    GT        reduce using rule 61 (operand_expression)
+    EQ        reduce using rule 61 (operand_expression)
+    NEQ       reduce using rule 61 (operand_expression)
+    AND       reduce using rule 61 (operand_expression)
+    OR        reduce using rule 61 (operand_expression)
+    $default  reduce using rule 96 (boolean_expression)
+
+
+State 83
+
+   70 operand_term: IDENTIFIER LP . arguments RP
+   71             | IDENTIFIER LP . RP
+
+    LP          shift, and go to state 51
+    RP          shift, and go to state 144
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    expressions         go to state 116
+    operand_expression  go to state 56
+    operand_term        go to state 48
+    arguments           go to state 145
+
+
+State 84
+
+   72 operand_term: IDENTIFIER LMB . operand_expression RMB
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 146
+    operand_term        go to state 48
+
+
+State 85
+
+   66 operand_expression: operand_expression MOD . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 147
+    operand_term        go to state 48
+
+
+State 86
+
+   62 operand_expression: operand_expression ADD . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 148
+    operand_term        go to state 48
+
+
+State 87
+
+   63 operand_expression: operand_expression SUB . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 149
+    operand_term        go to state 48
+
+
+State 88
+
+   64 operand_expression: operand_expression MUL . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 150
+    operand_term        go to state 48
+
+
+State 89
+
+   65 operand_expression: operand_expression DIV . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 151
+    operand_term        go to state 48
+
+
+State 90
+
+   88 boolean_expression: operand_expression LT . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 152
+    operand_term        go to state 48
+
+
+State 91
+
+   89 boolean_expression: operand_expression LET . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 153
+    operand_term        go to state 48
+
+
+State 92
+
+   91 boolean_expression: operand_expression GETH . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 154
+    operand_term        go to state 48
+
+
+State 93
+
+   92 boolean_expression: operand_expression GT . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 155
+    operand_term        go to state 48
+
+
+State 94
+
+   90 boolean_expression: operand_expression EQ . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 156
+    operand_term        go to state 48
+
+
+State 95
+
+   93 boolean_expression: operand_expression NEQ . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 157
+    operand_term        go to state 48
+
+
+State 96
+
+   60 operand_expression: operand_expression AND . operand_expression
+   95 boolean_expression: operand_expression AND . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 158
+    operand_term        go to state 48
+
+
+State 97
+
+   59 operand_expression: operand_expression OR . operand_expression
+   94 boolean_expression: operand_expression OR . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 159
+    operand_term        go to state 48
+
+
+State 98
+
+   84 conditional: IF boolean_expression THEN . $@6 description $@7 ELSE $@8 description END IF
+   86            | IF boolean_expression THEN . $@9 description END IF
+
+    BYG         reduce using rule 81 ($@6)
+    BYG         [reduce using rule 85 ($@9)]
+    CONST       reduce using rule 81 ($@6)
+    CONST       [reduce using rule 85 ($@9)]
+    END         reduce using rule 85 ($@9)
+    EXIT        reduce using rule 81 ($@6)
+    EXIT        [reduce using rule 85 ($@9)]
+    FOR         reduce using rule 81 ($@6)
+    FOR         [reduce using rule 85 ($@9)]
+    GET         reduce using rule 81 ($@6)
+    GET         [reduce using rule 85 ($@9)]
+    IF          reduce using rule 81 ($@6)
+    IF          [reduce using rule 85 ($@9)]
+    LOOP        reduce using rule 81 ($@6)
+    LOOP        [reduce using rule 85 ($@9)]
+    PUT         reduce using rule 81 ($@6)
+    PUT         [reduce using rule 85 ($@9)]
+    RESULT      reduce using rule 81 ($@6)
+    RESULT      [reduce using rule 85 ($@9)]
+    RETURN      reduce using rule 81 ($@6)
+    RETURN      [reduce using rule 85 ($@9)]
+    SKIP        reduce using rule 81 ($@6)
+    SKIP        [reduce using rule 85 ($@9)]
+    VAR         reduce using rule 81 ($@6)
+    VAR         [reduce using rule 85 ($@9)]
+    IDENTIFIER  reduce using rule 81 ($@6)
+    IDENTIFIER  [reduce using rule 85 ($@9)]
+    $default    reduce using rule 81 ($@6)
+
+    $@6  go to state 160
+    $@9  go to state 161
+
+
+State 99
+
+  104 loop: LOOP $@10 description . END LOOP
+
+    END  shift, and go to state 162
+
+
+State 100
+
+   51 expressions: LP expressions . RP
+
+    RP  shift, and go to state 163
+
+
+State 101
+
+   50 expressions: operand_expression .
+   52            | operand_expression . LT operand_expression
+   53            | operand_expression . LET operand_expression
+   54            | operand_expression . EQ operand_expression
+   55            | operand_expression . GETH operand_expression
+   56            | operand_expression . GT operand_expression
+   57            | operand_expression . NEQ operand_expression
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   73 operand_term: LP operand_expression . RP
+
+    RP    shift, and go to state 141
+    MOD   shift, and go to state 85
+    ADD   shift, and go to state 86
+    SUB   shift, and go to state 87
+    MUL   shift, and go to state 88
+    DIV   shift, and go to state 89
+    LT    shift, and go to state 103
+    LET   shift, and go to state 104
+    GETH  shift, and go to state 105
+    GT    shift, and go to state 106
+    EQ    shift, and go to state 107
+    NEQ   shift, and go to state 108
+    AND   shift, and go to state 109
+    OR    shift, and go to state 110
+
+    RP  [reduce using rule 50 (expressions)]
+
+
+State 102
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   61                   | NOT operand_expression .
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+
+    $default  reduce using rule 61 (operand_expression)
+
+
+State 103
+
+   52 expressions: operand_expression LT . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 164
+    operand_term        go to state 48
+
+
+State 104
+
+   53 expressions: operand_expression LET . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 165
+    operand_term        go to state 48
+
+
+State 105
+
+   55 expressions: operand_expression GETH . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 166
+    operand_term        go to state 48
+
+
+State 106
+
+   56 expressions: operand_expression GT . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 167
+    operand_term        go to state 48
+
+
+State 107
+
+   54 expressions: operand_expression EQ . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 168
+    operand_term        go to state 48
+
+
+State 108
+
+   57 expressions: operand_expression NEQ . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 169
+    operand_term        go to state 48
+
+
+State 109
+
+   60 operand_expression: operand_expression AND . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 170
+    operand_term        go to state 48
+
+
+State 110
+
+   59 operand_expression: operand_expression OR . operand_expression
+
+    LP          shift, and go to state 80
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    operand_expression  go to state 171
+    operand_term        go to state 48
+
+
+State 111
+
+   19 procedure_declarations: PROCEDURE IDENTIFIER LP . formal_arguments RP $@3 description END IDENTIFIER
+   21                       | PROCEDURE IDENTIFIER LP . RP $@4 description END IDENTIFIER
+
+    RP          shift, and go to state 172
+    IDENTIFIER  shift, and go to state 138
+
+    formal_arguments  go to state 173
+    args              go to state 140
+
+
+State 112
+
+   27 variable_declarations: VAR IDENTIFIER ASSIGN . const_expression
+
+    INTEGER     shift, and go to state 124
+    FLOAT       shift, and go to state 125
+    BOOLEAN     shift, and go to state 126
+    IDENTIFIER  shift, and go to state 127
+    STRING      shift, and go to state 128
+
+    const_expression  go to state 174
+
+
+State 113
+
+   28 variable_declarations: VAR IDENTIFIER COLON . type ASSIGN const_expression
+   29                      | VAR IDENTIFIER COLON . type
+   30 array_declarations: VAR IDENTIFIER COLON . ARRAY INTEGER DOT DOT INTEGER OF type
+
+    ARRAY  shift, and go to state 175
+    BOOL   shift, and go to state 130
+    INT    shift, and go to state 131
+    REAL   shift, and go to state 132
+    STR    shift, and go to state 133
+
+    type  go to state 176
+
+
+State 114
+
+   41 simple: IDENTIFIER ASSIGN expressions .
+
+    $default  reduce using rule 41 (simple)
+
+
+State 115
+
+   69 procedure_invocation: IDENTIFIER LP RP .
+
+    $default  reduce using rule 69 (procedure_invocation)
+
+
+State 116
+
+   79 arguments: expressions .
+   80          | expressions . COMMA arguments
+
+    COMMA  shift, and go to state 177
+
+    $default  reduce using rule 79 (arguments)
+
+
+State 117
+
+   68 procedure_invocation: IDENTIFIER LP arguments . RP
+
+    RP  shift, and go to state 178
+
+
+State 118
+
+   42 simple: IDENTIFIER LMB expressions . RMB ASSIGN expressions
+
+    RMB  shift, and go to state 179
+
+
+State 119
+
+   27 variable_declarations: VAR IDENTIFIER . ASSIGN const_expression
+   28                      | VAR IDENTIFIER . COLON type ASSIGN const_expression
+   29                      | VAR IDENTIFIER . COLON type
+
+    ASSIGN  shift, and go to state 112
+    COLON   shift, and go to state 180
+
+
+State 120
+
+  100 description: const_declarations description .
+
+    $default  reduce using rule 100 (description)
+
+
+State 121
+
+  101 description: variable_declarations description .
+
+    $default  reduce using rule 101 (description)
+
+
+State 122
+
+  102 description: statement_sequence description .
+
+    $default  reduce using rule 102 (description)
+
+
+State 123
+
+   39 block: BYG $@5 description END .
+
+    $default  reduce using rule 39 (block)
+
+
+State 124
+
+  110 const_expression: INTEGER .
+
+    $default  reduce using rule 110 (const_expression)
+
+
+State 125
+
+  111 const_expression: FLOAT .
+
+    $default  reduce using rule 111 (const_expression)
+
+
+State 126
+
+  112 const_expression: BOOLEAN .
+
+    $default  reduce using rule 112 (const_expression)
+
+
+State 127
+
+  113 const_expression: IDENTIFIER .
+
+    $default  reduce using rule 113 (const_expression)
+
+
+State 128
+
+  109 const_expression: STRING .
+
+    $default  reduce using rule 109 (const_expression)
+
+
+State 129
+
+   26 const_declarations: CONST IDENTIFIER ASSIGN const_expression .
+
+    $default  reduce using rule 26 (const_declarations)
+
+
+State 130
+
+   13 type: BOOL .
+
+    $default  reduce using rule 13 (type)
+
+
+State 131
+
+   11 type: INT .
+
+    $default  reduce using rule 11 (type)
+
+
+State 132
+
+   12 type: REAL .
+
+    $default  reduce using rule 12 (type)
+
+
+State 133
+
+   10 type: STR .
+
+    $default  reduce using rule 10 (type)
+
+
+State 134
+
+   25 const_declarations: CONST IDENTIFIER COLON type . ASSIGN const_expression
+
+    ASSIGN  shift, and go to state 181
+
+
+State 135
+
+  106 loop: FOR DECREASING IDENTIFIER COLON . const_expression DOT DOT const_expression $@11 description END FOR
+
+    INTEGER     shift, and go to state 124
+    FLOAT       shift, and go to state 125
+    BOOLEAN     shift, and go to state 126
+    IDENTIFIER  shift, and go to state 127
+    STRING      shift, and go to state 128
+
+    const_expression  go to state 182
+
+
+State 136
+
+  108 loop: FOR IDENTIFIER COLON const_expression . DOT DOT const_expression $@12 description END FOR
+
+    DOT  shift, and go to state 183
+
+
+State 137
+
+   17 function_declarations: FUNCTION IDENTIFIER LP RP . COLON type $@2 description END IDENTIFIER
+
+    COLON  shift, and go to state 184
+
+
+State 138
+
+   23 args: IDENTIFIER . COLON type
+   24     | IDENTIFIER . COLON type COMMA args
+
+    COLON  shift, and go to state 185
+
+
+State 139
+
+   15 function_declarations: FUNCTION IDENTIFIER LP formal_arguments . RP COLON type $@1 description END IDENTIFIER
+
+    RP  shift, and go to state 186
+
+
+State 140
+
+   22 formal_arguments: args .
+
+    $default  reduce using rule 22 (formal_arguments)
+
+
+State 141
+
+   73 operand_term: LP operand_expression RP .
+
+    $default  reduce using rule 73 (operand_term)
+
+
+State 142
+
+   87 boolean_expression: LP boolean_expression RP .
+
+    $default  reduce using rule 87 (boolean_expression)
+
+
+State 143
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   73 operand_term: LP operand_expression . RP
+
+    RP   shift, and go to state 141
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+
+State 144
+
+   71 operand_term: IDENTIFIER LP RP .
+
+    $default  reduce using rule 71 (operand_term)
+
+
+State 145
+
+   70 operand_term: IDENTIFIER LP arguments . RP
+
+    RP  shift, and go to state 187
+
+
+State 146
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   72 operand_term: IDENTIFIER LMB operand_expression . RMB
+
+    RMB  shift, and go to state 188
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+
+State 147
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   66                   | operand_expression MOD operand_expression .
+
+    $default  reduce using rule 66 (operand_expression)
+
+
+State 148
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   62                   | operand_expression ADD operand_expression .
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD  shift, and go to state 85
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+
+    $default  reduce using rule 62 (operand_expression)
+
+
+State 149
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   63                   | operand_expression SUB operand_expression .
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD  shift, and go to state 85
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+
+    $default  reduce using rule 63 (operand_expression)
+
+
+State 150
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   64                   | operand_expression MUL operand_expression .
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    $default  reduce using rule 64 (operand_expression)
+
+
+State 151
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   65                   | operand_expression DIV operand_expression .
+   66                   | operand_expression . MOD operand_expression
+
+    $default  reduce using rule 65 (operand_expression)
+
+
+State 152
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   88 boolean_expression: operand_expression LT operand_expression .
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 88 (boolean_expression)
+
+
+State 153
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   89 boolean_expression: operand_expression LET operand_expression .
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 89 (boolean_expression)
+
+
+State 154
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   91 boolean_expression: operand_expression GETH operand_expression .
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 91 (boolean_expression)
+
+
+State 155
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   92 boolean_expression: operand_expression GT operand_expression .
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 92 (boolean_expression)
+
+
+State 156
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   90 boolean_expression: operand_expression EQ operand_expression .
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 90 (boolean_expression)
+
+
+State 157
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   93 boolean_expression: operand_expression NEQ operand_expression .
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 93 (boolean_expression)
+
+
+State 158
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   60                   | operand_expression AND operand_expression .
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   95 boolean_expression: operand_expression AND operand_expression .
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+
+    RP        reduce using rule 60 (operand_expression)
+    RP        [reduce using rule 95 (boolean_expression)]
+    LT        reduce using rule 60 (operand_expression)
+    LET       reduce using rule 60 (operand_expression)
+    GETH      reduce using rule 60 (operand_expression)
+    GT        reduce using rule 60 (operand_expression)
+    EQ        reduce using rule 60 (operand_expression)
+    NEQ       reduce using rule 60 (operand_expression)
+    AND       reduce using rule 60 (operand_expression)
+    OR        reduce using rule 60 (operand_expression)
+    $default  reduce using rule 95 (boolean_expression)
+
+
+State 159
+
+   59 operand_expression: operand_expression . OR operand_expression
+   59                   | operand_expression OR operand_expression .
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+   94 boolean_expression: operand_expression OR operand_expression .
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+
+    RP        reduce using rule 59 (operand_expression)
+    RP        [reduce using rule 94 (boolean_expression)]
+    LT        reduce using rule 59 (operand_expression)
+    LET       reduce using rule 59 (operand_expression)
+    GETH      reduce using rule 59 (operand_expression)
+    GT        reduce using rule 59 (operand_expression)
+    EQ        reduce using rule 59 (operand_expression)
+    NEQ       reduce using rule 59 (operand_expression)
+    OR        reduce using rule 59 (operand_expression)
+    $default  reduce using rule 94 (boolean_expression)
+
+
+State 160
+
+   84 conditional: IF boolean_expression THEN $@6 . description $@7 ELSE $@8 description END IF
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 189
+    loop                   go to state 30
+
+
+State 161
+
+   86 conditional: IF boolean_expression THEN $@9 . description END IF
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 190
+    loop                   go to state 30
+
+
+State 162
+
+  104 loop: LOOP $@10 description END . LOOP
+
+    LOOP  shift, and go to state 191
+
+
+State 163
+
+   51 expressions: LP expressions RP .
+
+    $default  reduce using rule 51 (expressions)
+
+
+State 164
+
+   52 expressions: operand_expression LT operand_expression .
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 52 (expressions)
+
+
+State 165
+
+   53 expressions: operand_expression LET operand_expression .
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 53 (expressions)
+
+
+State 166
+
+   55 expressions: operand_expression GETH operand_expression .
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 55 (expressions)
+
+
+State 167
+
+   56 expressions: operand_expression GT operand_expression .
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 56 (expressions)
+
+
+State 168
+
+   54 expressions: operand_expression EQ operand_expression .
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 54 (expressions)
+
+
+State 169
+
+   57 expressions: operand_expression NEQ operand_expression .
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+    OR   shift, and go to state 110
+
+    $default  reduce using rule 57 (expressions)
+
+
+State 170
+
+   59 operand_expression: operand_expression . OR operand_expression
+   60                   | operand_expression . AND operand_expression
+   60                   | operand_expression AND operand_expression .
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+
+    $default  reduce using rule 60 (operand_expression)
+
+
+State 171
+
+   59 operand_expression: operand_expression . OR operand_expression
+   59                   | operand_expression OR operand_expression .
+   60                   | operand_expression . AND operand_expression
+   62                   | operand_expression . ADD operand_expression
+   63                   | operand_expression . SUB operand_expression
+   64                   | operand_expression . MUL operand_expression
+   65                   | operand_expression . DIV operand_expression
+   66                   | operand_expression . MOD operand_expression
+
+    MOD  shift, and go to state 85
+    ADD  shift, and go to state 86
+    SUB  shift, and go to state 87
+    MUL  shift, and go to state 88
+    DIV  shift, and go to state 89
+    AND  shift, and go to state 109
+
+    $default  reduce using rule 59 (operand_expression)
+
+
+State 172
+
+   21 procedure_declarations: PROCEDURE IDENTIFIER LP RP . $@4 description END IDENTIFIER
+
+    $default  reduce using rule 20 ($@4)
+
+    $@4  go to state 192
+
+
+State 173
+
+   19 procedure_declarations: PROCEDURE IDENTIFIER LP formal_arguments . RP $@3 description END IDENTIFIER
+
+    RP  shift, and go to state 193
+
+
+State 174
+
+   27 variable_declarations: VAR IDENTIFIER ASSIGN const_expression .
+
+    $default  reduce using rule 27 (variable_declarations)
+
+
+State 175
+
+   30 array_declarations: VAR IDENTIFIER COLON ARRAY . INTEGER DOT DOT INTEGER OF type
+
+    INTEGER  shift, and go to state 194
+
+
+State 176
+
+   28 variable_declarations: VAR IDENTIFIER COLON type . ASSIGN const_expression
+   29                      | VAR IDENTIFIER COLON type .
+
+    ASSIGN  shift, and go to state 195
+
+    $default  reduce using rule 29 (variable_declarations)
+
+
+State 177
+
+   80 arguments: expressions COMMA . arguments
+
+    LP          shift, and go to state 51
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    expressions         go to state 116
+    operand_expression  go to state 56
+    operand_term        go to state 48
+    arguments           go to state 196
+
+
+State 178
+
+   68 procedure_invocation: IDENTIFIER LP arguments RP .
+
+    $default  reduce using rule 68 (procedure_invocation)
+
+
+State 179
+
+   42 simple: IDENTIFIER LMB expressions RMB . ASSIGN expressions
+
+    ASSIGN  shift, and go to state 197
+
+
+State 180
+
+   28 variable_declarations: VAR IDENTIFIER COLON . type ASSIGN const_expression
+   29                      | VAR IDENTIFIER COLON . type
+
+    BOOL  shift, and go to state 130
+    INT   shift, and go to state 131
+    REAL  shift, and go to state 132
+    STR   shift, and go to state 133
+
+    type  go to state 176
+
+
+State 181
+
+   25 const_declarations: CONST IDENTIFIER COLON type ASSIGN . const_expression
+
+    INTEGER     shift, and go to state 124
+    FLOAT       shift, and go to state 125
+    BOOLEAN     shift, and go to state 126
+    IDENTIFIER  shift, and go to state 127
+    STRING      shift, and go to state 128
+
+    const_expression  go to state 198
+
+
+State 182
+
+  106 loop: FOR DECREASING IDENTIFIER COLON const_expression . DOT DOT const_expression $@11 description END FOR
+
+    DOT  shift, and go to state 199
+
+
+State 183
+
+  108 loop: FOR IDENTIFIER COLON const_expression DOT . DOT const_expression $@12 description END FOR
+
+    DOT  shift, and go to state 200
+
+
+State 184
+
+   17 function_declarations: FUNCTION IDENTIFIER LP RP COLON . type $@2 description END IDENTIFIER
+
+    BOOL  shift, and go to state 130
+    INT   shift, and go to state 131
+    REAL  shift, and go to state 132
+    STR   shift, and go to state 133
+
+    type  go to state 201
+
+
+State 185
+
+   23 args: IDENTIFIER COLON . type
+   24     | IDENTIFIER COLON . type COMMA args
+
+    BOOL  shift, and go to state 130
+    INT   shift, and go to state 131
+    REAL  shift, and go to state 132
+    STR   shift, and go to state 133
+
+    type  go to state 202
+
+
+State 186
+
+   15 function_declarations: FUNCTION IDENTIFIER LP formal_arguments RP . COLON type $@1 description END IDENTIFIER
+
+    COLON  shift, and go to state 203
+
+
+State 187
+
+   70 operand_term: IDENTIFIER LP arguments RP .
+
+    $default  reduce using rule 70 (operand_term)
+
+
+State 188
+
+   72 operand_term: IDENTIFIER LMB operand_expression RMB .
+
+    $default  reduce using rule 72 (operand_term)
+
+
+State 189
+
+   84 conditional: IF boolean_expression THEN $@6 description . $@7 ELSE $@8 description END IF
+
+    $default  reduce using rule 82 ($@7)
+
+    $@7  go to state 204
+
+
+State 190
+
+   86 conditional: IF boolean_expression THEN $@9 description . END IF
+
+    END  shift, and go to state 205
+
+
+State 191
+
+  104 loop: LOOP $@10 description END LOOP .
+
+    $default  reduce using rule 104 (loop)
+
+
+State 192
+
+   21 procedure_declarations: PROCEDURE IDENTIFIER LP RP $@4 . description END IDENTIFIER
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 206
+    loop                   go to state 30
+
+
+State 193
+
+   19 procedure_declarations: PROCEDURE IDENTIFIER LP formal_arguments RP . $@3 description END IDENTIFIER
+
+    $default  reduce using rule 18 ($@3)
+
+    $@3  go to state 207
+
+
+State 194
+
+   30 array_declarations: VAR IDENTIFIER COLON ARRAY INTEGER . DOT DOT INTEGER OF type
+
+    DOT  shift, and go to state 208
+
+
+State 195
+
+   28 variable_declarations: VAR IDENTIFIER COLON type ASSIGN . const_expression
+
+    INTEGER     shift, and go to state 124
+    FLOAT       shift, and go to state 125
+    BOOLEAN     shift, and go to state 126
+    IDENTIFIER  shift, and go to state 127
+    STRING      shift, and go to state 128
+
+    const_expression  go to state 209
+
+
+State 196
+
+   80 arguments: expressions COMMA arguments .
+
+    $default  reduce using rule 80 (arguments)
+
+
+State 197
+
+   42 simple: IDENTIFIER LMB expressions RMB ASSIGN . expressions
+
+    LP          shift, and go to state 51
+    SUB         shift, and go to state 40
+    NOT         shift, and go to state 52
+    INTEGER     shift, and go to state 42
+    FLOAT       shift, and go to state 43
+    BOOLEAN     shift, and go to state 53
+    IDENTIFIER  shift, and go to state 54
+    STRING      shift, and go to state 46
+
+    expressions         go to state 210
+    operand_expression  go to state 56
+    operand_term        go to state 48
+
+
+State 198
+
+   25 const_declarations: CONST IDENTIFIER COLON type ASSIGN const_expression .
+
+    $default  reduce using rule 25 (const_declarations)
+
+
+State 199
+
+  106 loop: FOR DECREASING IDENTIFIER COLON const_expression DOT . DOT const_expression $@11 description END FOR
+
+    DOT  shift, and go to state 211
+
+
+State 200
+
+  108 loop: FOR IDENTIFIER COLON const_expression DOT DOT . const_expression $@12 description END FOR
+
+    INTEGER     shift, and go to state 124
+    FLOAT       shift, and go to state 125
+    BOOLEAN     shift, and go to state 126
+    IDENTIFIER  shift, and go to state 127
+    STRING      shift, and go to state 128
+
+    const_expression  go to state 212
+
+
+State 201
+
+   17 function_declarations: FUNCTION IDENTIFIER LP RP COLON type . $@2 description END IDENTIFIER
+
+    $default  reduce using rule 16 ($@2)
+
+    $@2  go to state 213
+
+
+State 202
+
+   23 args: IDENTIFIER COLON type .
+   24     | IDENTIFIER COLON type . COMMA args
+
+    COMMA  shift, and go to state 214
+
+    $default  reduce using rule 23 (args)
+
+
+State 203
+
+   15 function_declarations: FUNCTION IDENTIFIER LP formal_arguments RP COLON . type $@1 description END IDENTIFIER
+
+    BOOL  shift, and go to state 130
+    INT   shift, and go to state 131
+    REAL  shift, and go to state 132
+    STR   shift, and go to state 133
+
+    type  go to state 215
+
+
+State 204
+
+   84 conditional: IF boolean_expression THEN $@6 description $@7 . ELSE $@8 description END IF
+
+    ELSE  shift, and go to state 216
+
+
+State 205
+
+   86 conditional: IF boolean_expression THEN $@9 description END . IF
+
+    IF  shift, and go to state 217
+
+
+State 206
+
+   21 procedure_declarations: PROCEDURE IDENTIFIER LP RP $@4 description . END IDENTIFIER
+
+    END  shift, and go to state 218
+
+
+State 207
+
+   19 procedure_declarations: PROCEDURE IDENTIFIER LP formal_arguments RP $@3 . description END IDENTIFIER
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 219
+    loop                   go to state 30
+
+
+State 208
+
+   30 array_declarations: VAR IDENTIFIER COLON ARRAY INTEGER DOT . DOT INTEGER OF type
+
+    DOT  shift, and go to state 220
+
+
+State 209
+
+   28 variable_declarations: VAR IDENTIFIER COLON type ASSIGN const_expression .
+
+    $default  reduce using rule 28 (variable_declarations)
+
+
+State 210
+
+   42 simple: IDENTIFIER LMB expressions RMB ASSIGN expressions .
+
+    $default  reduce using rule 42 (simple)
+
+
+State 211
+
+  106 loop: FOR DECREASING IDENTIFIER COLON const_expression DOT DOT . const_expression $@11 description END FOR
+
+    INTEGER     shift, and go to state 124
+    FLOAT       shift, and go to state 125
+    BOOLEAN     shift, and go to state 126
+    IDENTIFIER  shift, and go to state 127
+    STRING      shift, and go to state 128
+
+    const_expression  go to state 221
+
+
+State 212
+
+  108 loop: FOR IDENTIFIER COLON const_expression DOT DOT const_expression . $@12 description END FOR
+
+    $default  reduce using rule 107 ($@12)
+
+    $@12  go to state 222
+
+
+State 213
+
+   17 function_declarations: FUNCTION IDENTIFIER LP RP COLON type $@2 . description END IDENTIFIER
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 223
+    loop                   go to state 30
+
+
+State 214
+
+   24 args: IDENTIFIER COLON type COMMA . args
+
+    IDENTIFIER  shift, and go to state 138
+
+    args  go to state 224
+
+
+State 215
+
+   15 function_declarations: FUNCTION IDENTIFIER LP formal_arguments RP COLON type . $@1 description END IDENTIFIER
+
+    $default  reduce using rule 14 ($@1)
+
+    $@1  go to state 225
+
+
+State 216
+
+   84 conditional: IF boolean_expression THEN $@6 description $@7 ELSE . $@8 description END IF
+
+    $default  reduce using rule 83 ($@8)
+
+    $@8  go to state 226
+
+
+State 217
+
+   86 conditional: IF boolean_expression THEN $@9 description END IF .
+
+    $default  reduce using rule 86 (conditional)
+
+
+State 218
+
+   21 procedure_declarations: PROCEDURE IDENTIFIER LP RP $@4 description END . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 227
+
+
+State 219
+
+   19 procedure_declarations: PROCEDURE IDENTIFIER LP formal_arguments RP $@3 description . END IDENTIFIER
+
+    END  shift, and go to state 228
+
+
+State 220
+
+   30 array_declarations: VAR IDENTIFIER COLON ARRAY INTEGER DOT DOT . INTEGER OF type
+
+    INTEGER  shift, and go to state 229
+
+
+State 221
+
+  106 loop: FOR DECREASING IDENTIFIER COLON const_expression DOT DOT const_expression . $@11 description END FOR
+
+    $default  reduce using rule 105 ($@11)
+
+    $@11  go to state 230
+
+
+State 222
+
+  108 loop: FOR IDENTIFIER COLON const_expression DOT DOT const_expression $@12 . description END FOR
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 231
+    loop                   go to state 30
+
+
+State 223
+
+   17 function_declarations: FUNCTION IDENTIFIER LP RP COLON type $@2 description . END IDENTIFIER
+
+    END  shift, and go to state 232
+
+
+State 224
+
+   24 args: IDENTIFIER COLON type COMMA args .
+
+    $default  reduce using rule 24 (args)
+
+
+State 225
+
+   15 function_declarations: FUNCTION IDENTIFIER LP formal_arguments RP COLON type $@1 . description END IDENTIFIER
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 233
+    loop                   go to state 30
+
+
+State 226
+
+   84 conditional: IF boolean_expression THEN $@6 description $@7 ELSE $@8 . description END IF
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 234
+    loop                   go to state 30
+
+
+State 227
+
+   21 procedure_declarations: PROCEDURE IDENTIFIER LP RP $@4 description END IDENTIFIER .
+
+    $default  reduce using rule 21 (procedure_declarations)
+
+
+State 228
+
+   19 procedure_declarations: PROCEDURE IDENTIFIER LP formal_arguments RP $@3 description END . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 235
+
+
+State 229
+
+   30 array_declarations: VAR IDENTIFIER COLON ARRAY INTEGER DOT DOT INTEGER . OF type
+
+    OF  shift, and go to state 236
+
+
+State 230
+
+  106 loop: FOR DECREASING IDENTIFIER COLON const_expression DOT DOT const_expression $@11 . description END FOR
+
+    BYG         shift, and go to state 1
+    CONST       shift, and go to state 2
+    EXIT        shift, and go to state 3
+    FOR         shift, and go to state 4
+    GET         shift, and go to state 6
+    IF          shift, and go to state 7
+    LOOP        shift, and go to state 8
+    PUT         shift, and go to state 9
+    RESULT      shift, and go to state 11
+    RETURN      shift, and go to state 12
+    SKIP        shift, and go to state 13
+    VAR         shift, and go to state 67
+    IDENTIFIER  shift, and go to state 15
+
+    $default  reduce using rule 99 (description)
+
+    const_declarations     go to state 68
+    variable_declarations  go to state 69
+    statement_sequence     go to state 70
+    statements             go to state 25
+    block                  go to state 26
+    simple                 go to state 27
+    procedure_invocation   go to state 28
+    conditional            go to state 29
+    description            go to state 237
+    loop                   go to state 30
+
+
+State 231
+
+  108 loop: FOR IDENTIFIER COLON const_expression DOT DOT const_expression $@12 description . END FOR
+
+    END  shift, and go to state 238
+
+
+State 232
+
+   17 function_declarations: FUNCTION IDENTIFIER LP RP COLON type $@2 description END . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 239
+
+
+State 233
+
+   15 function_declarations: FUNCTION IDENTIFIER LP formal_arguments RP COLON type $@1 description . END IDENTIFIER
+
+    END  shift, and go to state 240
+
+
+State 234
+
+   84 conditional: IF boolean_expression THEN $@6 description $@7 ELSE $@8 description . END IF
+
+    END  shift, and go to state 241
+
+
+State 235
+
+   19 procedure_declarations: PROCEDURE IDENTIFIER LP formal_arguments RP $@3 description END IDENTIFIER .
+
+    $default  reduce using rule 19 (procedure_declarations)
+
+
+State 236
+
+   30 array_declarations: VAR IDENTIFIER COLON ARRAY INTEGER DOT DOT INTEGER OF . type
+
+    BOOL  shift, and go to state 130
+    INT   shift, and go to state 131
+    REAL  shift, and go to state 132
+    STR   shift, and go to state 133
+
+    type  go to state 242
+
+
+State 237
+
+  106 loop: FOR DECREASING IDENTIFIER COLON const_expression DOT DOT const_expression $@11 description . END FOR
+
+    END  shift, and go to state 243
+
+
+State 238
+
+  108 loop: FOR IDENTIFIER COLON const_expression DOT DOT const_expression $@12 description END . FOR
+
+    FOR  shift, and go to state 244
+
+
+State 239
+
+   17 function_declarations: FUNCTION IDENTIFIER LP RP COLON type $@2 description END IDENTIFIER .
+
+    $default  reduce using rule 17 (function_declarations)
+
+
+State 240
+
+   15 function_declarations: FUNCTION IDENTIFIER LP formal_arguments RP COLON type $@1 description END . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 245
+
+
+State 241
+
+   84 conditional: IF boolean_expression THEN $@6 description $@7 ELSE $@8 description END . IF
+
+    IF  shift, and go to state 246
+
+
+State 242
+
+   30 array_declarations: VAR IDENTIFIER COLON ARRAY INTEGER DOT DOT INTEGER OF type .
+
+    $default  reduce using rule 30 (array_declarations)
+
+
+State 243
+
+  106 loop: FOR DECREASING IDENTIFIER COLON const_expression DOT DOT const_expression $@11 description END . FOR
+
+    FOR  shift, and go to state 247
+
+
+State 244
+
+  108 loop: FOR IDENTIFIER COLON const_expression DOT DOT const_expression $@12 description END FOR .
+
+    $default  reduce using rule 108 (loop)
+
+
+State 245
+
+   15 function_declarations: FUNCTION IDENTIFIER LP formal_arguments RP COLON type $@1 description END IDENTIFIER .
+
+    $default  reduce using rule 15 (function_declarations)
+
+
+State 246
+
+   84 conditional: IF boolean_expression THEN $@6 description $@7 ELSE $@8 description END IF .
+
+    $default  reduce using rule 84 (conditional)
+
+
+State 247
+
+  106 loop: FOR DECREASING IDENTIFIER COLON const_expression DOT DOT const_expression $@11 description END FOR .
+
+    $default  reduce using rule 106 (loop)
